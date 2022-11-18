@@ -1,8 +1,14 @@
 package handlers
 
-import "net/http"
+import (
+	"book-microservice/internal/database"
+	"encoding/json"
+	"net/http"
+)
 
-func GetBooks(response http.ResponseWriter, request *http.Request) {
+func GetAll(response http.ResponseWriter, request *http.Request) {
 
-	response.WriteHeader(http.StatusOK)
+	books := database.GetAll()
+
+	json.NewEncoder(response).Encode(books)
 }
