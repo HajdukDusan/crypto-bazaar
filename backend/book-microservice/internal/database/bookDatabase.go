@@ -29,15 +29,25 @@ func CreateDatabase(books []model.Book) error {
 	return nil
 }
 
-func GetAll() []model.Book {
+func GetAll(pagination Pagination) *Pagination {
 
-	var books []model.Book
-	database.Find(&books)
-	return books
+	var rows []*model.Book
+
+	database.Scopes(paginate(rows, &pagination, database)).Find(&rows)
+	pagination.Rows = rows
+
+	return &pagination
 }
 
-func GetById() {
+func GetById(id uint) *model.Book {
 
+	var book *model.Book
+	database.First(&book, id)
+
+	if book.ID != id {
+		return nil
+	}
+	return book
 }
 
 func Create() {

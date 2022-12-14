@@ -22,8 +22,8 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/book", handlers.GetAll).Methods("GET")
-	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("GET")
+	router.HandleFunc("/book", handlers.GetAllPaged).Methods("GET")
+	router.HandleFunc("/book/{id}", handlers.GetOne).Methods("GET")
 
 	// router.HandleFunc("/book", handlers.GetBooks).Methods("POST")
 	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("PUT")
