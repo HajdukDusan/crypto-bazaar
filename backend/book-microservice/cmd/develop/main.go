@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -36,7 +37,14 @@ func main() {
 
 	fmt.Println("Starting service at port: " + port)
 
-	err = http.ListenAndServe(":"+port, router)
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"},
+		AllowedHeaders: []string{"Origin, Content-Type, Accept, Authorization"},
+	})
+
+	handler := c.Handler(router)
+
+	err = http.ListenAndServe(":"+port, handler)
 	if err != nil {
 		fmt.Print(err)
 	}

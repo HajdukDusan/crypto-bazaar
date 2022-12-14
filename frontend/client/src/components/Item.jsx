@@ -11,16 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 
-const data = {
-  isNew: true,
-  imageURL:
-    "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80",
-  name: "Wayfarer Classic",
-  price: 4.5,
-  rating: 4.2,
-  numReviews: 34,
-};
-
 function Rating({ rating, numReviews }) {
   return (
     <Box as="span">
@@ -51,11 +41,12 @@ function Rating({ rating, numReviews }) {
   );
 }
 
-const ProductItem = () => {
+const Item = ({ item }) => {
+
   return (
     <Flex p={2}>
       <Box maxW="sm" borderWidth="1px" rounded="lg" position="relative">
-        {data.isNew && (
+        {/* {item.isNew && (
           <Circle
             size="10px"
             position="absolute"
@@ -63,22 +54,22 @@ const ProductItem = () => {
             right={2}
             bg="red.200"
           />
-        )}
+        )} */}
 
         <Image
-          src={data.imageURL}
-          alt={`Picture of ${data.name}`}
+          src={item.Image}
+          alt={`Picture of ${item.Name}`}
           roundedTop="lg"
         />
 
         <Box p="6">
-          <Box d="flex" alignItems="baseline">
+          {/* <Box d="flex" alignItems="baseline">
             {data.isNew && (
               <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
                 New
               </Badge>
             )}
-          </Box>
+          </Box> */}
           <Flex mt="1" justifyContent="space-between" alignContent="center">
             <Box
               fontSize="2xl"
@@ -87,55 +78,24 @@ const ProductItem = () => {
               lineHeight="tight"
               isTruncated
             >
-              {data.name}
+              {item.Name}
             </Box>
           </Flex>
           <br></br>
 
           <Flex justifyContent="space-between" alignContent="center">
-            <Rating rating={data.rating} numReviews={data.numReviews} />
+            {/* <Rating rating={data.rating} numReviews={data.numReviews} /> */}
             <Box fontSize="2xl" color={useColorModeValue("gray.800", "white")}>
               <Box as="span" color={"gray.600"} fontSize="lg">
-                £
+                $
               </Box>
-              {data.price.toFixed(2)}
+              {(200.00123).toFixed(2)}
             </Box>
           </Flex>
         </Box>
       </Box>
     </Flex>
-
-    // <Box
-    //   maxW="sm"
-    //   borderWidth="1px"
-    //   rounded="lg"
-    //   position="relative"
-    //   cursor="pointer"
-    // >
-
-    //   <Image
-    //     src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-    //     roundedTop="lg"
-    //     height="300px"
-    //     width="100%"
-    //     objectFit="cover"
-    //   />
-
-    //   <Box p="6">
-    //     <Flex mt="1" justifyContent="space-between" alignContent="center">
-    //       <Box
-    //         fontSize="xl"
-    //         fontWeight="semibold"
-    //         as="h4"
-    //         lineHeight="tight"
-    //         isTruncated
-    //       >
-    //         Stuff
-    //       </Box>
-    //     </Flex>
-    //   </Box>
-    // </Box>
   );
 };
 
-export default ProductItem;
+export default Item;
