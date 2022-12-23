@@ -1,17 +1,24 @@
-# Alpine is chosen for its small footprint
-# compared to Ubuntu
-FROM golang:1.19
-LABEL maintainer="crypto-bazaar"
+FROM golang:1.19-alpine as dev
+
+# we download the lib here before copy so it can be cached
 
 WORKDIR /app
+COPY . /app/
 
-COPY ./ ./
 RUN go mod download
 
-RUN go build ./cmd/develop/main.go
+RUN CGO_ENABLED=0 go build ./cmd/develop/main.go
 
-ENV PORT=8080
+FROM gcr.io/distroless/static-debian11 as prod
 
-EXPOSE 8080
+COPY --from=dev /app/main /
+CMD ["/main"]
 
-CMD [ "./main" ]
+# builds main.exe in root folder
+# RUN go build ./cmd/develop/main.go 
+
+# ENV PORT=8080
+
+# EXPOSE 8080
+
+# CMD [ "./main" ]

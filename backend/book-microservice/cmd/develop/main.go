@@ -1,9 +1,6 @@
 package main
 
 import (
-	"book-microservice/data"
-	"book-microservice/internal/database"
-	"book-microservice/internal/handlers"
 	"fmt"
 	"net/http"
 	"os"
@@ -14,17 +11,22 @@ import (
 
 func main() {
 
-	err := database.CreateDatabase(data.Books)
+	// err := database.CreateDatabase(data.Books)
 
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/book", handlers.GetAllPaged).Methods("GET")
-	router.HandleFunc("/book/{id}", handlers.GetOne).Methods("GET")
+	router.HandleFunc("/kita", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Hello World!")
+	}).Methods("GET")
+
+	// router.HandleFunc("/book", handlers.GetAllPaged).Methods("GET")
+	// router.HandleFunc("/book/{id}", handlers.GetOne).Methods("GET")
 
 	// router.HandleFunc("/book", handlers.GetBooks).Methods("POST")
 	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("PUT")
@@ -44,7 +46,7 @@ func main() {
 
 	handler := c.Handler(router)
 
-	err = http.ListenAndServe(":"+port, handler)
+	err := http.ListenAndServe(":"+port, handler)
 	if err != nil {
 		fmt.Print(err)
 	}
