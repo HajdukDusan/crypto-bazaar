@@ -1,40 +1,35 @@
 package main
 
 import (
+	"book-microservice/data"
+	"book-microservice/database"
+	"book-microservice/routes"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
 
 func main() {
 
-	// err := database.CreateDatabase(data.Books)
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
 
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
+	database.ConnectDb(data.Books)
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/kita", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "Hello World!")
-	}).Methods("GET")
-
-	// router.HandleFunc("/book", handlers.GetAllPaged).Methods("GET")
-	// router.HandleFunc("/book/{id}", handlers.GetOne).Methods("GET")
-
-	// router.HandleFunc("/book", handlers.GetBooks).Methods("POST")
-	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("PUT")
-	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("DELETE")
+	routes.SetupRoutes(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "9001" //localhost
+		port = "8080" //localhost
 	}
 
 	fmt.Println("Starting service at port: " + port)
@@ -46,8 +41,8 @@ func main() {
 
 	handler := c.Handler(router)
 
-	err := http.ListenAndServe(":"+port, handler)
+	err = http.ListenAndServe(":"+port, handler)
 	if err != nil {
-		fmt.Print(err)
+		log.Fatalf("Server crashed, reason:" + err.Error())
 	}
 }

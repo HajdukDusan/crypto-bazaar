@@ -5,8 +5,27 @@ services:
     build: 
       context: .
       target: dev
-    # command: go run main.go
+    env_file:
+      - .env
+    command: go run ./cmd/develop/main.go
     volumes:
       - ./:/app
     ports:
       - '9001:8080'
+
+  db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-db:/var/lib/postgresgl/data
+
+# volumes:
+#   postgres-db:
+
+volumes:
+  postgres-db:

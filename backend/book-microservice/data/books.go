@@ -1,7 +1,7 @@
 package data
 
 import (
-	"book-microservice/internal/model"
+	"book-microservice/model"
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
@@ -13,13 +13,13 @@ var Books = []model.Book{
 		Name:        "Building Microservices: Designing Fine-Grained Systems 2nd Edition",
 		Author:      "Sam Newman",
 		Description: "As organizations shift from monolithic applications to smaller, self-contained microservices, distributed systems have become more fine-grained. But developing these new systems brings its own host of problems. This expanded second edition takes a holistic view of topics that you need to consider when building, managing, and scaling microservices architectures.",
-		Image:       toBase64("data\\images\\1.jpg"),
+		Image:       toBase64("data/images/1.jpg"),
 	},
 	{
 		Name:        "Building Microservices with Go: Develop seamless, efficient, and robust microservices with Go",
 		Author:      "Nic Jackson",
 		Description: "Your one-stop guide to the common patterns and practices, showing you how to apply these using the Go programming language",
-		Image:       toBase64("data\\images\\2.jpg"),
+		Image:       toBase64("data/images/2.jpg"),
 	},
 }
 
@@ -32,7 +32,9 @@ func toBase64(imageRelativePath string) string {
 		return ""
 	}
 
-	bytes, err := ioutil.ReadFile(pwd + "\\" + imageRelativePath)
+	fmt.Println(pwd + "/" + imageRelativePath)
+
+	bytes, err := ioutil.ReadFile(pwd + "/" + imageRelativePath)
 	if err != nil {
 		fmt.Println(err)
 		return ""
