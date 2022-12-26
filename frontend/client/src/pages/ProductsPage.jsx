@@ -12,7 +12,7 @@ const ProductsPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:9001/book");
+      const response = await fetch("http://localhost:9001/books");
       const json = await response.json();
       setItems(json.rows);
     } catch (error) {

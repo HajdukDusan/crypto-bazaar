@@ -3,6 +3,7 @@ package main
 import (
 	"book-microservice/src/data"
 	"book-microservice/src/database"
+	"book-microservice/src/middleware"
 	"book-microservice/src/routes"
 	"fmt"
 	"log"
@@ -24,6 +25,8 @@ func main() {
 	database.ConnectDb(data.Books)
 
 	router := mux.NewRouter()
+
+	router.Use(middleware.JsonContentTypeResponse)
 
 	routes.SetupRoutes(router)
 

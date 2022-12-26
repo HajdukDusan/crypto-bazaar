@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"book-microservice/src/database"
+	"book-microservice/src/model"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -9,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetAllPaged(response http.ResponseWriter, request *http.Request) {
+func GetAllPagedBooks(response http.ResponseWriter, request *http.Request) {
 
 	query := request.URL.Query()
 
@@ -29,18 +30,79 @@ func GetAllPaged(response http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(response).Encode(books)
 }
 
-func GetOne(response http.ResponseWriter, request *http.Request) {
+func GetOneBook(response http.ResponseWriter, request *http.Request) {
 
 	params := mux.Vars(request)
-
 	id, _ := strconv.ParseUint(params["id"], 10, 64)
 
-	books := database.GetById(uint(id))
+	book := database.GetById(uint(id))
 
-	if books == nil {
+	if book == nil {
 		response.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	json.NewEncoder(response).Encode(books)
+	json.NewEncoder(response).Encode(book)
+}
+
+func CreateBook(response http.ResponseWriter, request *http.Request) {
+
+	var book *model.Book
+
+	err := json.NewDecoder(request.Body).Decode(&book)
+	if err != nil {
+		response.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	result := database.Create(book)
+
+	if result.Error != nil {
+		response.WriteHeader(http.StatusBadRequest)
+	} else {
+		response.WriteHeader(http.StatusCreated)
+	}
+}
+
+func UpdateBook(response http.ResponseWriter, request *http.Request) {
+
+	params := mux.Vars(request)
+	id, _ := strconv.ParseUint(params["id"], 10, 64)
+
+	var book *model.Book
+
+	err := json.NewDecoder(request.Body).Decode(&book)
+	if err != nil {
+		response.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	result := database.Update(id, book)
+
+	if result.Error != nil {
+		response.WriteHeader(http.StatusBadRequest)
+	} else {
+		response.WriteHeader(http.StatusNoContent)
+	}
+}
+
+func DeleteBook(response http.ResponseWriter, request *http.Request) {
+
+	params := mux.Vars(request)
+	id, _ := strconv.ParseUint(params["id"], 10, 64)
+
+	book := database.GetById(uint(id))
+
+	if book == nil {
+		response.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	result := database.Delete(id)
+
+	if result.Error != nil {
+		response.WriteHeader(http.StatusBadRequest)
+	} else {
+		response.WriteHeader(http.StatusNoContent)
+	}
 }

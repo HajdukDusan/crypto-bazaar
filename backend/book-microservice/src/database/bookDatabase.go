@@ -61,14 +61,15 @@ func GetById(id uint) *model.Book {
 	return book
 }
 
-func Create() {
-
+func Create(book *model.Book) *gorm.DB {
+	return DB_Instance.Create(book)
 }
 
-func Update() {
+func Update(id uint64, book *model.Book) *gorm.DB {
 
+	return DB_Instance.Where("ID = ?", id).Updates(book)
 }
 
-func Delete() {
-
+func Delete(id uint64) *gorm.DB {
+	return DB_Instance.Delete(&model.Book{}, id)
 }

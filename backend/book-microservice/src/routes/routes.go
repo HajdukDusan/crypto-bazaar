@@ -7,10 +7,10 @@ import (
 )
 
 func SetupRoutes(router *mux.Router) {
-	router.HandleFunc("/book", handlers.GetAllPaged).Methods("GET")
-	router.HandleFunc("/book/{id}", handlers.GetOne).Methods("GET")
+	router.HandleFunc("/books", handlers.GetAllPagedBooks).Methods("GET")
+	router.HandleFunc("/books/{id}", handlers.GetOneBook).Methods("GET")
 
-	// router.HandleFunc("/book", handlers.GetBooks).Methods("POST")
-	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("PUT")
-	// router.HandleFunc("/book/{id}", handlers.GetBooks).Methods("DELETE")
+	router.HandleFunc("/books", handlers.CreateBook).Methods("POST")
+	router.HandleFunc("/books/{id}", handlers.UpdateBook).Methods("PUT")
+	router.HandleFunc("/books/{id}", handlers.DeleteBook).Methods("DELETE")
 }

@@ -8,6 +8,8 @@ services:
     env_file:
       - .env
     command: go run ./src/cmd/develop/main.go
+    volumes:
+      - ./:/app
     ports:
       - '9001:8080'
     restart: unless-stopped
