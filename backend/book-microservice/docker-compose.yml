@@ -7,14 +7,13 @@ services:
       target: dev
     env_file:
       - .env
-    command: go run ./cmd/develop/main.go
-    volumes:
-      - ./:/app
+    command: go run ./src/cmd/develop/main.go
     ports:
       - '9001:8080'
+    restart: unless-stopped
 
   db:
-    image: postgres:alpine
+    image: postgres:12.13-alpine3.17
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -23,9 +22,9 @@ services:
       - '5432:5432'
     volumes:
       - postgres-db:/var/lib/postgresgl/data
-
-# volumes:
-#   postgres-db:
+    restart: unless-stopped
+    
 
 volumes:
-  postgres-db:
+  postgres-db: {}
+

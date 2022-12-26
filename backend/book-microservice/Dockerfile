@@ -7,7 +7,7 @@ COPY . .
 
 RUN go mod download
 
-RUN CGO_ENABLED=0 go build ./cmd/develop/main.go
+RUN CGO_ENABLED=0 go build ./src/cmd/develop/main.go
 
 # FROM gcr.io/distroless/static-debian11 as prod
 # COPY --from=dev /app/main /
@@ -18,7 +18,7 @@ RUN CGO_ENABLED=0 go build ./cmd/develop/main.go
 
 
 # builds main.exe in root folder
-# RUN go build ./cmd/develop/main.go 
+# RUN go build ./src/cmd/develop/main.go 
 
 # ENV PORT=8080
 
