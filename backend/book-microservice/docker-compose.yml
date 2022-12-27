@@ -23,7 +23,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - postgres-db:/var/lib/postgresgl/data
+      - postgres-db:/var/lib/postgresql/data
     restart: unless-stopped
     
 
