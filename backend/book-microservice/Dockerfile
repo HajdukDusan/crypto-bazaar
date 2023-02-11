@@ -1,27 +1,18 @@
 FROM golang:1.19-alpine as dev
 
-# we download the lib here before copy so it can be cached
-
-WORKDIR /app
+WORKDIR /goapp
 COPY . .
-
 RUN go mod download
+
+EXPOSE 8080
 
 RUN CGO_ENABLED=0 go build ./src/cmd/develop/main.go
 
-# FROM gcr.io/distroless/static-debian11 as prod
-# COPY --from=dev /app/main /
+FROM gcr.io/distroless/static-debian11 as prod
+COPY --from=dev /goapp/main / 
+COPY --from=dev /goapp/.env /
+COPY --from=dev /goapp/src/data/images /src/data/images
 
-# CMD ["./main"]
+EXPOSE 8080
 
-
-
-
-# builds main.exe in root folder
-# RUN go build ./src/cmd/develop/main.go 
-
-# ENV PORT=8080
-
-# EXPOSE 8080
-
-# CMD [ "./main" ]
+CMD ["./main"]
