@@ -1,0 +1,10 @@
+FROM golang:1.19-alpine
+WORKDIR /goapp
+COPY . .
+RUN CGO_ENABLED=0 go build ./src/cmd/develop/main.go
+
+FROM gcr.io/distroless/static-debian11
+COPY --from=0 /goapp/main / 
+COPY --from=0 /goapp/.env /
+COPY --from=0 /goapp/src/data/images /src/data/images
+CMD ["./main"]

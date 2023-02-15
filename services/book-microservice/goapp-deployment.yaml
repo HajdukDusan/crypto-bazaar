@@ -1,28 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: goapp
   labels:
-    name: goapp
+    app: goapp
+  name: goapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: goapp
+      app: goapp
   template:
     metadata:
       labels:
-        name: goapp
+        app: goapp
     spec:
       containers:
         - name: goapp
           image: goapp
           imagePullPolicy: Never # use local docker image
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           envFrom:
             - configMapRef:
                 name: postgres-config
           env:
           - name: DB_ENDPOINT
             value: $(POSTGRES_SERVICE_HOST)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: goapp-service
+  name: goapp-service  # Sets service name
+spec:
+  selector:
+    app: goapp
+  type: NodePort #LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 80
+      nodePort: 30007

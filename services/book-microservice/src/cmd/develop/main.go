@@ -32,14 +32,14 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" //localhost
+		port = "80" //localhost
 	}
 
 	fmt.Println("Starting service at port: " + port)
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:3000"},
-		AllowedHeaders: []string{"Origin, Content-Type, Accept, Authorization"},
+		AllowedOrigins: []string{"*", "http://localhost:3000"},
+		AllowedHeaders: []string{"*", "Origin, Content-Type, Accept, Authorization"},
 	})
 
 	handler := c.Handler(router)
